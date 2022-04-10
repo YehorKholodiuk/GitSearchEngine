@@ -1,25 +1,61 @@
 import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function App() {
-  return (
+  const [rep, setRep] = useState([])
+  const [loader,setLoader] = useState(true)
+
+  function fetchData(){
+
+    axios ({
+    method:'GET',
+    url: 'https://api.github.com/search/repositories',
+    params:{
+      q: 'Javascript',
+      sort: 'stars',
+      order:'desc',
+      page:1,
+
+    }
+
+    }).then(
+        (res) => {
+            setRep(res.data.items)
+          console.log(rep, '')
+
+          setLoader(false)
+        }).catch((err) => console.log(err))
+  }
+  useEffect(() => {fetchData()},[])
+
+
+return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+<table>
+    <tbody>
+    <tr>
+        <td>Name</td>
+        <td>url</td>
+        <td>owner</td>
+        <td>forks</td>
+        <td>open issues</td>
+    </tr>
+    {
+        rep.map((el) => <tr>
+            <td>{el.name}</td>
+            <td>{el.url}</td>
+            <td>{el._owner}</td>
+        </tr>)
+    }
+    </tbody>
+</table>
     </div>
-  );
+);
 }
 
 export default App;
+
+
+
