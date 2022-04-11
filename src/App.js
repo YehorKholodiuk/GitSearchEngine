@@ -33,8 +33,8 @@ function App() {
 
 return (
     <div className="App">
-<table>
-    <tbody>
+<table className={"table"}>
+    <tbody className={"theader"}>
     <tr>
         <td>Name</td>
         <td>url</td>
@@ -43,7 +43,7 @@ return (
         <td>open issues</td>
     </tr>
     {
-        rep.map((el) => <tr>
+        rep.map((el) => <tr className={"tbody"}>
             <td>{el.name}</td>
             <td>{el.url}</td>
             <td>{el._owner}</td>
