@@ -33,6 +33,8 @@ function App() {
 
 return (
     <div className="App">
+
+        { loader ? <h1>Hello!</h1> : (
 <table className={"table"}>
     <tbody className={"theader"}>
     <tr>
@@ -48,9 +50,10 @@ return (
             <td>{el.url}</td>
             <td>{el._owner}</td>
         </tr>)
-    }
+        }
     </tbody>
 </table>
+            )}
     </div>
 );
 }
