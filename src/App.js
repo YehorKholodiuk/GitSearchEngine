@@ -48,7 +48,7 @@ function App() {
             fetchData()
 
         }, 3000)
-    },)
+    },[page])
 
     useEffect(() => {
         console.log(lastEl,'last')
@@ -56,7 +56,7 @@ function App() {
 
        if (lastEl) {observer.observe(lastEl)}
         return ()=>{observer.unobserve(lastEl)}
-    }, [page])
+    }, [lastEl])
 
 
     return (
