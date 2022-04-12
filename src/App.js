@@ -1,17 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 function App() {
     const [rep, setRep] = useState([]);
     const [loader, setLoader] = useState(true);
     const [page, setPage] = useState(1);
+    const [lastEl, setLastEl] = useState(null)
     const observer = new IntersectionObserver(
         entries => {
             if (entries[0].isIntersecting) {
                 console.log('Increment')
-                setPage(page+1)
+                setPage(page + 1)
                 setLoader(true)
                 fetchData()
             }
@@ -40,6 +41,8 @@ function App() {
             }).catch((err) => console.log(err))
     }
 
+    const canvasRef = useRef()
+
     useEffect(() => {
         setTimeout(() => {
             fetchData()
@@ -47,7 +50,13 @@ function App() {
         }, 3000)
     },)
 
-    useEffect(() =>{},[page])
+    useEffect(() => {
+        console.log(lastEl,'last')
+        console.log(observer,'LAst')
+
+       if (lastEl) {observer.observe(lastEl)}
+        return ()=>{observer.unobserve(lastEl)}
+    }, [page])
 
 
     return (
@@ -64,7 +73,7 @@ function App() {
                         <td>open issues</td>
                     </tr>
                     {
-                        rep.map((el) => <tr className={"tbody"}>
+                        rep.map((el) => <tr ref={setLastEl} className={"tbody"}>
                             <td>{el.name}</td>
                             <td>{el.url}</td>
                             <td>{el._owner}</td>
