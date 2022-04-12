@@ -4,37 +4,43 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 function App() {
-  const [rep, setRep] = useState([])
-  const [loader,setLoader] = useState(true)
+    const [rep, setRep] = useState([])
+    const [loader, setLoader] = useState(true)
 
-  function fetchData(){
+    function fetchData() {
 
-    axios ({
-    method:'GET',
-    url: 'https://api.github.com/search/repositories',
-    params:{
-      q: 'Javascript',
-      sort: 'stars',
-      order:'desc',
-      page:1,
+        axios({
+            method: 'GET',
+            url: 'https://api.github.com/search/repositories',
+            params: {
+                q: 'Javascript',
+                sort: 'stars',
+                order: 'desc',
+                page: 1,
 
+            }
+
+        }).then(
+            (res) => {
+                setRep(res.data.items)
+                console.log(rep, '')
+
+                setLoader(false)
+            }).catch((err) => console.log(err))
     }
 
-    }).then(
-        (res) => {
-            setRep(res.data.items)
-          console.log(rep, '')
+    useEffect(() => {
+        setTimeout(() => {
+            fetchData()
 
-          setLoader(false)
-        }).catch((err) => console.log(err))
-  }
-  useEffect(() => {fetchData()},[])
+    }, 3000)
+},)
 
 
 return (
     <div className="App">
 
-        { loader ? <h1>Hello!</h1> : (
+        { loader ? <img src={logo}/> : (
 <table className={"table"}>
     <tbody className={"theader"}>
     <tr>
