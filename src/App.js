@@ -4,8 +4,19 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 function App() {
-    const [rep, setRep] = useState([])
-    const [loader, setLoader] = useState(true)
+    const [rep, setRep] = useState([]);
+    const [loader, setLoader] = useState(true);
+    const [page, setPage] = useState(1);
+    const observer = new IntersectionObserver(
+        entries => {
+            if (entries[0].isIntersecting) {
+                console.log('Increment')
+                setPage(page+1)
+                setLoader(true)
+                fetchData()
+            }
+        }
+    )
 
     function fetchData() {
 
@@ -16,7 +27,7 @@ function App() {
                 q: 'Javascript',
                 sort: 'stars',
                 order: 'desc',
-                page: 1,
+                page: page,
 
             }
 
@@ -33,35 +44,37 @@ function App() {
         setTimeout(() => {
             fetchData()
 
-    }, 3000)
-},)
+        }, 3000)
+    },)
+
+    useEffect(() =>{},[page])
 
 
-return (
-    <div className="App">
+    return (
+        <div className="App">
 
-        { loader ? <img src={logo}/> : (
-<table className={"table"}>
-    <tbody className={"theader"}>
-    <tr>
-        <td>Name</td>
-        <td>url</td>
-        <td>owner</td>
-        <td>forks</td>
-        <td>open issues</td>
-    </tr>
-    {
-        rep.map((el) => <tr className={"tbody"}>
-            <td>{el.name}</td>
-            <td>{el.url}</td>
-            <td>{el._owner}</td>
-        </tr>)
-        }
-    </tbody>
-</table>
+            {loader ? <img className="App-logo" src={logo}/> : (
+                <table className={"table"}>
+                    <tbody className={"theader"}>
+                    <tr>
+                        <td>Name</td>
+                        <td>url</td>
+                        <td>owner</td>
+                        <td>forks</td>
+                        <td>open issues</td>
+                    </tr>
+                    {
+                        rep.map((el) => <tr className={"tbody"}>
+                            <td>{el.name}</td>
+                            <td>{el.url}</td>
+                            <td>{el._owner}</td>
+                        </tr>)
+                    }
+                    </tbody>
+                </table>
             )}
-    </div>
-);
+        </div>
+    );
 }
 
 export default App;
