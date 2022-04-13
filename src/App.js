@@ -14,7 +14,7 @@ function App() {
                 console.log('Increment')
                 setPage(page + 1)
                 setLoader(true)
-                fetchData()
+
             }
         }
     )
@@ -34,29 +34,31 @@ function App() {
 
         }).then(
             (res) => {
-                setRep(res.data.items)
+                setRep([...rep,...res.data.items])
                 console.log(rep, '')
 
                 setLoader(false)
             }).catch((err) => console.log(err))
     }
 
-    const canvasRef = useRef()
+
+
 
     useEffect(() => {
         setTimeout(() => {
             fetchData()
 
-        }, 3000)
+        }, 0)
     },[page])
 
     useEffect(() => {
-        console.log(lastEl,'last')
-        console.log(observer,'LAst')
+        //console.log(lastEl,'last')
+        //console.log(observer,'Observer')
 
-       if (lastEl) {observer.observe(lastEl)}
-        return ()=>{observer.unobserve(lastEl)}
+        if (lastEl) {observer.observe(lastEl)}
+        return ()=>{if(lastEl) observer.unobserve(lastEl)}
     }, [lastEl])
+
 
 
     return (
@@ -77,6 +79,8 @@ function App() {
                             <td>{el.name}</td>
                             <td>{el.url}</td>
                             <td>{el._owner}</td>
+                            <td>{el.forks}</td>
+                            <td>{el.open_issues}</td>
                         </tr>)
                     }
                     </tbody>
